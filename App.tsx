@@ -5,8 +5,7 @@ import { UserRole, AppData, Student, Poll, Notice, RoutineItem, Faculty, Attenda
 // Mock initial data
 const INITIAL_DATA: AppData = {
   routine: [
-    { id: '1', type: 'Offline', day: 'Sunday', time: '10:00 AM', sub: 'Circuit Theory', teacher: 'Prof. JB', roomOrLink: 'R-402' },
-    { id: '2', type: 'Online', day: 'Monday', time: '11:30 AM', sub: 'Calculus III', teacher: 'Dr. MK', roomOrLink: 'zoom.us/j/123' }
+    { id: '1', type: 'Offline', day: 'FRIDAY', time: '8.00', sub: 'Circuit', teacher: 'ASK', roomOrLink: '20002' }
   ],
   student: [
     { id: '2026001', name: 'Al-Amin', phone: '01700000001', dipSession: '2019-20' },
@@ -216,21 +215,21 @@ const App: React.FC = () => {
 // --- Sub-View Components ---
 
 const HomeView: React.FC<{ data: AppData; setData: React.Dispatch<React.SetStateAction<AppData>>; canEdit: (p: string) => boolean }> = ({ data, setData, canEdit }) => {
-  const [form, setForm] = useState<Partial<RoutineItem>>({ type: 'Offline', day: 'Sunday' });
+  const [form, setForm] = useState<Partial<RoutineItem>>({ type: 'Offline', day: 'FRIDAY' });
 
   const addClass = () => {
     if (!form.sub || !form.time) return alert("Fill required fields");
     const newItem: RoutineItem = {
       id: Date.now().toString(),
       type: form.type as any,
-      day: form.day || 'Sunday',
+      day: form.day || 'FRIDAY',
       time: form.time || '',
       sub: form.sub || '',
       teacher: form.teacher || '',
       roomOrLink: form.roomOrLink || ''
     };
     setData(prev => ({ ...prev, routine: [...prev.routine, newItem] }));
-    setForm({ type: 'Offline', day: 'Sunday' });
+    setForm({ type: 'Offline', day: 'FRIDAY' });
   };
 
   const removeClass = (id: string) => {
@@ -238,107 +237,96 @@ const HomeView: React.FC<{ data: AppData; setData: React.Dispatch<React.SetState
   };
 
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-500">
-      <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm overflow-hidden relative group">
-        <div className="relative z-10">
-          <h2 className="text-4xl font-black text-slate-900 mb-2">Hello, EEE Batch!</h2>
-          <p className="text-slate-500 font-medium">Here's what's happening today in your department.</p>
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-500">
+      <div className="flex items-center gap-3 py-2">
+        <span className="text-3xl">👋</span>
+        <h1 className="text-3xl font-black text-slate-800">Welcome Batch 2026</h1>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-100 p-4 rounded-2xl flex items-center gap-4 text-blue-700 shadow-sm">
+        <div className="flex items-center gap-2">
+          <i className="fa-solid fa-bullhorn text-lg"></i>
+          <span className="font-black">Latest:</span>
         </div>
-        <div className="absolute top-0 right-0 p-8 text-8xl text-slate-50/50 group-hover:scale-110 transition-transform">
-           <i className="fa-solid fa-graduation-cap"></i>
-        </div>
+        <button className="text-blue-600 hover:underline font-medium">Update your Profile</button>
       </div>
 
       {canEdit('routine') && (
-        <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-md space-y-6">
-          <h3 className="font-black text-xl text-slate-800 flex items-center gap-3">
-            <span className="w-1.5 h-6 bg-amber-500 rounded-full"></span>
-            Update Class Schedule
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+          <h3 className="font-black text-lg text-slate-800 flex items-center gap-3">
+            <i className="fa-solid fa-plus-circle text-amber-500"></i>
+            Quick Add Routine
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div className="space-y-1">
-               <label className="text-xs font-bold text-slate-400 ml-1">Type</label>
-               <select value={form.type} onChange={e => setForm({...form, type: e.target.value as any})} className="w-full p-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-amber-500 outline-none transition-all">
-                <option value="Offline">🏢 Offline Class</option>
-                <option value="Online">💻 Online Class</option>
-              </select>
-            </div>
-            <div className="space-y-1">
-               <label className="text-xs font-bold text-slate-400 ml-1">Day</label>
-               <input placeholder="Sunday" value={form.day} onChange={e => setForm({...form, day: e.target.value})} className="w-full p-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-amber-500 outline-none transition-all" />
-            </div>
-            <div className="space-y-1">
-               <label className="text-xs font-bold text-slate-400 ml-1">Time</label>
-               <input placeholder="10:30 AM" value={form.time} onChange={e => setForm({...form, time: e.target.value})} className="w-full p-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-amber-500 outline-none transition-all" />
-            </div>
-            <div className="space-y-1">
-               <label className="text-xs font-bold text-slate-400 ml-1">Subject</label>
-               <input placeholder="Power System I" value={form.sub} onChange={e => setForm({...form, sub: e.target.value})} className="w-full p-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-amber-500 outline-none transition-all" />
-            </div>
-            <div className="space-y-1">
-               <label className="text-xs font-bold text-slate-400 ml-1">Teacher</label>
-               <input placeholder="Prof. Name" value={form.teacher} onChange={e => setForm({...form, teacher: e.target.value})} className="w-full p-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-amber-500 outline-none transition-all" />
-            </div>
-            <div className="space-y-1">
-               <label className="text-xs font-bold text-slate-400 ml-1">Location / Link</label>
-               <input placeholder="Room 402 / Meet URL" value={form.roomOrLink} onChange={e => setForm({...form, roomOrLink: e.target.value})} className="w-full p-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-amber-500 outline-none transition-all" />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <select value={form.type} onChange={e => setForm({...form, type: e.target.value as any})} className="p-3 rounded-xl bg-slate-50 border border-slate-100 outline-none">
+                <option value="Offline">Offline Class</option>
+                <option value="Online">Online Class</option>
+            </select>
+            <input placeholder="DAY (e.g. FRIDAY)" value={form.day} onChange={e => setForm({...form, day: e.target.value.toUpperCase()})} className="p-3 rounded-xl bg-slate-50 border border-slate-100 outline-none" />
+            <input placeholder="TIME (e.g. 8.00)" value={form.time} onChange={e => setForm({...form, time: e.target.value})} className="p-3 rounded-xl bg-slate-50 border border-slate-100 outline-none" />
+            <input placeholder="SUBJECT" value={form.sub} onChange={e => setForm({...form, sub: e.target.value})} className="p-3 rounded-xl bg-slate-50 border border-slate-100 outline-none" />
+            <input placeholder="TEACHER" value={form.teacher} onChange={e => setForm({...form, teacher: e.target.value})} className="p-3 rounded-xl bg-slate-50 border border-slate-100 outline-none" />
+            <input placeholder="ROOM / LINK" value={form.roomOrLink} onChange={e => setForm({...form, roomOrLink: e.target.value})} className="p-3 rounded-xl bg-slate-50 border border-slate-100 outline-none" />
           </div>
-          <button onClick={addClass} className="w-full bg-slate-900 text-white font-black py-4 rounded-2xl hover:bg-slate-800 shadow-lg active:scale-[0.98] transition-all">
+          <button onClick={addClass} className="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-all">
             Add to Routine
           </button>
         </div>
       )}
 
-      <div className="space-y-10">
-        <RoutineSection title="Offline Class (On Campus)" icon="fa-building" type="Offline" items={data.routine} removeClass={removeClass} canEdit={canEdit('routine')} />
-        <RoutineSection title="Online Class (Remote)" icon="fa-laptop" type="Online" items={data.routine} removeClass={removeClass} canEdit={canEdit('routine')} />
+      <div className="space-y-12">
+        <RoutineSection title="Offline Class (Campus)" type="Offline" items={data.routine} removeClass={removeClass} canEdit={canEdit('routine')} />
+        <RoutineSection title="Online Class" type="Online" items={data.routine} removeClass={removeClass} canEdit={canEdit('routine')} />
       </div>
     </div>
   );
 };
 
-const RoutineSection: React.FC<{ title: string; icon: string; type: string; items: RoutineItem[]; removeClass: (id: string) => void; canEdit: boolean }> = ({ title, icon, type, items, removeClass, canEdit }) => {
+const RoutineSection: React.FC<{ title: string; type: string; items: RoutineItem[]; removeClass: (id: string) => void; canEdit: boolean }> = ({ title, type, items, removeClass, canEdit }) => {
   const filtered = items.filter(i => i.type === type);
+  const isOffline = type === 'Offline';
+  
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3 px-2">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${type === 'Offline' ? 'bg-emerald-100 text-emerald-600' : 'bg-sky-100 text-sky-600'}`}>
-          <i className={`fa-solid ${icon}`}></i>
-        </div>
-        <h3 className="text-xl font-black text-slate-800">{title}</h3>
+    <div className="space-y-0">
+      <div className={`flex items-center gap-3 p-4 bg-slate-100/50 rounded-t-2xl border-l-8 ${isOffline ? 'border-emerald-500' : 'border-blue-500'}`}>
+        <i className={`fa-solid ${isOffline ? 'fa-building' : 'fa-laptop'} text-slate-600`}></i>
+        <h3 className="text-lg font-black text-slate-800">{title}</h3>
       </div>
       
-      {/* Desktop View Table */}
-      <div className="hidden md:block bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-slate-50 text-slate-400 text-[10px] uppercase font-black tracking-widest border-b border-slate-100">
+      <div className="bg-white border-x border-b border-slate-100 shadow-sm overflow-hidden">
+        <table className="w-full text-left table-fixed md:table-auto">
+          <thead className="bg-slate-50/50 text-slate-400 text-[11px] uppercase font-black tracking-widest border-b border-slate-100">
             <tr>
-              <th className="px-6 py-5">Day & Time</th>
-              <th className="px-6 py-5">Subject</th>
-              <th className="px-6 py-5">Teacher</th>
-              <th className="px-6 py-5">Location</th>
-              {canEdit && <th className="px-6 py-5 text-center w-20">Actions</th>}
+              <th className="px-6 py-4 w-28">DAY</th>
+              <th className="px-6 py-4 w-28">TIME</th>
+              <th className="px-6 py-4">SUBJECT</th>
+              <th className="px-6 py-4">TEACHER</th>
+              <th className="px-6 py-4">{isOffline ? 'ROOM' : 'LINK'}</th>
+              {canEdit && <th className="px-6 py-4 w-16 text-center"></th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
             {filtered.length === 0 ? (
-              <tr><td colSpan={5} className="px-6 py-12 text-center text-slate-300 italic font-medium">No schedules available</td></tr>
+              <tr><td colSpan={canEdit ? 6 : 5} className="px-6 py-10 text-center text-slate-300 font-medium italic">No classes scheduled</td></tr>
             ) : filtered.map(item => (
-              <tr key={item.id} className="hover:bg-slate-50 transition-colors group">
-                <td className="px-6 py-5">
-                  <div className="font-bold text-slate-900">{item.day}</div>
-                  <div className="text-xs text-slate-500">{item.time}</div>
-                </td>
-                <td className="px-6 py-5 font-bold text-slate-800">{item.sub}</td>
-                <td className="px-6 py-5 text-slate-600 font-medium">{item.teacher}</td>
-                <td className="px-6 py-5">
-                   <span className="px-3 py-1 bg-slate-100 rounded-lg text-xs font-mono font-bold text-slate-600">{item.roomOrLink}</span>
+              <tr key={item.id} className={`group hover:bg-slate-50/50 transition-colors border-l-4 ${isOffline ? 'border-emerald-500/20' : 'border-blue-500/20'}`}>
+                <td className="px-6 py-4 font-black text-slate-900 uppercase text-sm">{item.day}</td>
+                <td className="px-6 py-4 text-slate-600 font-medium text-sm">{item.time}</td>
+                <td className="px-6 py-4 text-slate-700 font-semibold text-sm">{item.sub}</td>
+                <td className="px-6 py-4 text-slate-600 font-medium text-sm">{item.teacher}</td>
+                <td className="px-6 py-4">
+                  {isOffline ? (
+                    <span className="text-slate-600 font-bold text-sm">{item.roomOrLink}</span>
+                  ) : (
+                    <a href={item.roomOrLink.startsWith('http') ? item.roomOrLink : `https://${item.roomOrLink}`} target="_blank" className="text-blue-500 hover:underline font-bold text-sm truncate block max-w-[150px]">
+                      {item.roomOrLink}
+                    </a>
+                  )}
                 </td>
                 {canEdit && (
-                  <td className="px-6 py-5 text-center">
-                    <button onClick={() => removeClass(item.id)} className="text-slate-300 hover:text-red-500 transition-colors">
-                      <i className="fa-solid fa-trash-can"></i>
+                  <td className="px-6 py-4 text-center">
+                    <button onClick={() => removeClass(item.id)} className="text-slate-200 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+                      <i className="fa-solid fa-trash-can text-sm"></i>
                     </button>
                   </td>
                 )}
@@ -346,36 +334,6 @@ const RoutineSection: React.FC<{ title: string; icon: string; type: string; item
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Mobile Card View */}
-      <div className="md:hidden space-y-4">
-        {filtered.length === 0 ? (
-          <div className="bg-white p-10 rounded-3xl text-center text-slate-300 font-bold border-2 border-dashed border-slate-100">Empty Schedule</div>
-        ) : filtered.map(item => (
-          <div key={item.id} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-            <div className="flex justify-between items-start">
-              <div>
-                <div className="text-xs font-black text-amber-600 uppercase mb-1 tracking-tighter">{item.day} • {item.time}</div>
-                <h4 className="text-lg font-black text-slate-800">{item.sub}</h4>
-              </div>
-              {canEdit && (
-                <button onClick={() => removeClass(item.id)} className="w-8 h-8 rounded-full bg-red-50 text-red-400 flex items-center justify-center">
-                   <i className="fa-solid fa-trash-can text-xs"></i>
-                </button>
-              )}
-            </div>
-            <div className="flex items-center justify-between pt-2 border-t border-slate-50">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-                  <i className="fa-solid fa-user-tie text-xs"></i>
-                </div>
-                <span className="text-sm font-bold text-slate-600">{item.teacher}</span>
-              </div>
-              <span className="text-xs font-bold font-mono px-3 py-1 bg-amber-50 text-amber-700 rounded-lg">{item.roomOrLink}</span>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
